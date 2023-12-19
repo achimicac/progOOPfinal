@@ -7,10 +7,9 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 
 const EditPet = () => {
     const {petid} = useParams();
-    const inputRef = useRef();
 
     const [pet, setPet] = useState({
-        petPfp: '',
+        petPfp: null,
         petName: '',
         petType: '',
         petGender: '',
@@ -21,14 +20,40 @@ const EditPet = () => {
     const navigate = useNavigate()
     const location = useLocation()
     axios.defaults.withCredentials = true;
+    /////////////////
+    const handleChange = (e) => {
+        const { name , value, files } = e.target;
 
-    const petId = location.pathname.split("/")[2]
+        if (name === 'petPfp') {
+            const reader = new FileReader();
+            const file = files[0];
+
+            reader.onloadend = () => {
+                setPet({
+                    ...pet,
+                    [name]: {
+                        file,
+                        dataUrl: reader.result,
+                    },
+                });
+            };
+            if (file) {
+                reader.readAsDataURL(file);
+            } 
+        } else {
+            setPet({
+                ...pet,
+                [name]: value,
+            });
+        }
+    };
+    /////////////////
 
     /*window.onload = function () {
         const inputFile = document.getElementById('file');
         const imgArea = document.querySelector('.img-area');
 
-        inputFile.addEventListener('change', function () {
+        inputFile.addEventListener('file', function () {
             const image = this.files[0]
             if (image.size < 2000000) {
                 const reader = new FileReader();
@@ -49,10 +74,10 @@ const EditPet = () => {
         })
     }*/
 
-    const handleChange = (e) => {
+    /*const handleChange = (e) => {
         setPet({ ...pet, [e.target.name]: e.target.value })
         console.log(pet)
-    }
+    }*/
 
     useEffect(() => {
         const fetchPetData = async () => {
@@ -65,15 +90,26 @@ const EditPet = () => {
         };
 
         fetchPetData();
-    }, [petId]);
+    }, []);
 
 
     const handleClick = async (e) => {
         e.preventDefault();
 
+        const data = {
+            petName: pet.petName,
+            petType: pet.petType,
+            petGender: pet.petGender,
+            petDoB: pet.petDoB,
+            petPfp: pet.petPfp,
+        };
+        console.log(data)
+
         try {
             
-            const resEdit = await axios.put(`http://localhost:3009/petprofile/${petid}/edit`, pet); // Replace with your API endpoint
+            const resEdit = await axios.put(`http://localhost:3009/petprofile/${petid}/edit`, data, {
+                withCredentials: true,
+            }); // Replace with your API endpoint
             if (resEdit.data.status === "success") {
                 alert(resEdit.data.success);
                 navigate(`/petprofile/${petid}`)
@@ -87,6 +123,7 @@ const EditPet = () => {
     };
 
     console.log(pet.petName)
+    console.log(pet.petPfp)
 
     return (
         <div className='EditPet'>
@@ -98,7 +135,7 @@ const EditPet = () => {
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
                 <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
                 <script src="https://kit.fontawesome.com/957263c2c4.js" crossorigin="anonymous"></script>
-            </Helmet>
+                            </Helmet>
             <div class="back">
                 <a href="#"><Link to={`/petprofile/${pet.petID}`}><i class="fa-solid fa-chevron-left fa-3x"></i></Link></a>
             </div>
@@ -110,7 +147,7 @@ const EditPet = () => {
                             <h3>Upload Image</h3>
                             <p>Image size must be less than <span>2MB</span></p>
                         </div>
-                        <input type="file" id="file" accept="image/*" value={""} />
+                        <input type="file" id="file" name="petPfp" multiple={false} onChange={ handleChange }/>
                     </div>
                 
                     <div class="textinfo">
@@ -153,9 +190,9 @@ const EditPet = () => {
                                     );
                                 }
                             })()}
-
-                        <label for="DoB">Birthday:</label>
-                        <input id="DoB" type="date" name="petDoB" value={pet.petbd} onChange={handleChange} />
+    
+                        <label for="DoB" name="petDoB" onChange={handleChange}>Birthday: {pet.bd}</label>
+                        <input id="DoB" type="date" name="petDoB" value={pet.petDoB} onChange={handleChange} />
                         <div class="CancelAndSubmit">
                             <Link to={`/petprofile/${petid}`}><button id="cancel" class="button">Cancel</button></Link>
                             <button id="submit" class="button" type="submit" name="submit" onClick={handleClick}>Submit</button>

@@ -3,31 +3,24 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");*/
 import {db} from '../routes/db-config.js';
 import multer from 'multer';
+import jwt from 'jsonwebtoken';
 
 export const petregister = async (req, res) => {
       const userRegisteredCookie = req.cookies.userRegistered;
       const decodedToken = jwt.decode(userRegisteredCookie, process.env.JWT_SECRET);
 
-      const { petName, petType, petDoB, petGender} = req.body;
-      const {petPfp} = req.files;
-      
-      //const userId = jwt.decode(req.cookies.userRegistered, process.env.JWT_SECRET);
-      //const id = userId.id;
+      const { petName, petType, petDoB, petGender, petPfp } = req.body;
+      const binaryData = Buffer.from(petPfp.dataUrl.split(',')[1], 'base64'); 
       
       try {
-      if(!petName || !petType || !petDoB || !petPfp || !petGender) return res.json({
+      if(!petName || !petType || !petDoB || !petPfp || !petGender || !petPfp) return res.json({
             status: "error",
             error: "Please enter all your pet information"
       })
       else {
-            //let date = moment(new Date()).format("YYYY-MM-DD");
-
-            //console.log(samplefile)
-              const fileconvert = upload.single(petPfp);
-              console.log(fileconvert.filename);
-            console.log("From control/petregister: " + " : " + petName + "/n" + petDoB + "/n" + petGender + "/n" + petPfp + "/n" + petType);
+            console.log("From control/petregister: " + " : " + petName + "\n" + petDoB + "\n" + petGender + "\n" + binaryData + "\n" + petType);
             //Check ว่าเคยลงไปยัง พวกstatus กับ error successเชื่อมอยู่กับหน้าregister.jsในpublicนะ
-            /*db.query('SELECT * FROM Pet WHERE id = ? and petName = ?', [decodedToken.id, petName], async (err, result) => {
+            db.query('SELECT * FROM Pet WHERE id = ? and petName = ?', [decodedToken.id, petName], async (err, result) => {
                   //console.log("from db: " + result[0].username + " " + result[0].email);
                   console.log("from db: " + result[0]);
                   if (err) throw err;
@@ -36,7 +29,7 @@ export const petregister = async (req, res) => {
                                           }
                   else {
 
-                        db.query('INSERT INTO Pet SET ?', {petName: petName, petType:petType, petDoB: petDoB, petPfp: petPfp, petGender: petGender, id: decodedToken.id}, (error, results) => {
+                        db.query('INSERT INTO Pet SET ?', {petName: petName, petType:petType, petDoB: petDoB, petPfp: binaryData, petGender: petGender, id: decodedToken.id}, (error, results) => {
                               if (error) throw error;
                               res.json({status: "success", success: "your pet is ready!"});
 
@@ -62,7 +55,7 @@ export const petregister = async (req, res) => {
                               })
                         })
                   }
-            })*/}
+            })}
       } catch (error) {
             console.log(error);
       }

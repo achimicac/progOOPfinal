@@ -10,7 +10,18 @@ export const allPet = (req, res, next) => {
             console.log("Can't find this user");
             return res.status(404).send("Can't find this user");
             } else {
+                  for (let i = 0; i < result.length; i++) {
+                        console.log(result[i]);
+                        let petPfpUrl;
+                        if (result[i].petPfp !== undefined) {
+                            const binaryData = result[i].petPfp;
+                            petPfpUrl = `data:image/jpeg;base64,${binaryData.toString('base64')}`;
+                            // Assign the petPfpUrl to the result item directly
+                            result[i].petPfpUrl = petPfpUrl;
+                        }
+                  }
             res.petData = result;
+            console.log(res.petData)
             return next();
             }
       })

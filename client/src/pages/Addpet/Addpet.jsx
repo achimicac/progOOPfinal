@@ -10,12 +10,13 @@ const Addpet = () => {
     const [imageUrl, setImageUrl] = useState('');
     const [imageName, setImageName] = useState('');
     const navigate = useNavigate()
+
     const [pet, setPet] = useState({
-        petPfp: "",
         petName: "",
         petType: "",
         petGender: "",
-        petDoB:""
+        petDoB: "",
+        petPfp: null,
     });
 
     const [file, setFile] = useState(null)
@@ -41,31 +42,51 @@ const Addpet = () => {
 
 
     const handleChange = (e) => {
-        setPet((prev) => ({ ...prev, [e.target.name]: e.target.value}))
-    }
+        const { name , value, files } = e.target;
+
+        if (name === 'petPfp') {
+            const reader = new FileReader();
+            const file = files[0];
+
+            reader.onloadend = () => {
+                setPet({
+                    ...pet,
+                    [name]: {
+                        file,
+                        dataUrl: reader.result,
+                    },
+                });
+            };
+            if (file) {
+                reader.readAsDataURL(file);
+            } 
+        } else {
+            setPet({
+                ...pet,
+                [name]: value,
+            });
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        const formData = new FormData();
-        formData.append("petPfp", file);
-        formData.append("petName", pet.petName);
-        formData.append("petType", pet.petType);
-        formData.append("petGender", pet.petGender);
-        formData.append("petDoB", pet.petDoB)
-
-        const config = {
-            headers:{
-                "Content-Type":"multipart/form-data"
-            }
-        }
+        const data = {
+            petName: pet.petName,
+            petType: pet.petType,
+            petGender: pet.petGender,
+            petDoB: pet.petDoB,
+            petPfp: pet.petPfp,
+        };
+        console.log(data)
+        
         try{
-            console.log("formdata" + URL.createObjectURL([...formData][0]))
-            const respet = await axios.post("http://localhost:3009/petregister", formData, config) 
-            if(respet.data.status === "error"){
+            const respet = await axios.post("http://localhost:3009/petregister", data, {
+                withCredentials: true,
+            })
+            if(respet.data.status === "error") {
                 alert(respet.data.error)
-            }
-            else{
+            } else {
                 alert(respet.data.success)
                 navigate('/home')
             }
@@ -78,7 +99,7 @@ const Addpet = () => {
         <Helmet>
             <meta charset="UTF-8"/>
             <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-            <title>Add pet</title>
+            <title>Add ,</title>
             <link rel="preconnect" href="https://fonts.googleapis.com"/>
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
             <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
@@ -110,9 +131,9 @@ const Addpet = () => {
 
                 <div class="textinfo">
                     <label for="name">Name</label>
-                    <input id="name" type="text" placeholder="Name" name="petName" onChange={handleChange} />
+                    <input id="name" type="text" placeholder="Name" name="petName" value={pet.petName} onChange={ handleChange }/>
                     <label for="type">Type</label>
-                    <select id="type" name="petType" onChange={handleChange}>
+                    <select id="type" name="petType" onChange={ handleChange }>
                         <option value="None">None</option>
                         <option value="Dog">Dog</option>
                         <option value="Cat">Cat</option>
@@ -120,20 +141,20 @@ const Addpet = () => {
                     <p>Gender</p>
                     <div class="selectGender">
                         <div>
-                            <input id="male" type="radio" value="Male" name="petGender" onChange={handleChange}/>
+                            <input id="male" type="radio" value="Male" name="petGender" checked={pet.petGender === 'Male'} onChange={ handleChange }/>
                             <label for="male">Male</label>
                         </div>
                         <div>
-                            <input id="female" type="radio" value="Female" name="petGender" onChange={handleChange}/>
+                            <input id="female" type="radio" value="Female" name="petGender" checked={pet.petGender === 'Female'} onChange={ handleChange }/>
                             <label for="female">Female</label>
                         </div>
                     </div>
 
                     <label for="DoB">Birthday:</label>
-                    <input id="DoB" type="date" name="petDoB" onChange={handleChange}/>
+                    <input id="DoB" type="date" name="petDoB" value={pet.petDoB} onChange={ handleChange }/>
                     <div class="CancelAndSubmit">
                         <button id="cancel" class="button">Cancel</button>
-                        <button id="submit" className="button" type="submit" name="submit" onClick={handleSubmit} variant="primary">Submit</button>
+                        <button id="submit" className="button" type="submit" name="submit" variant="primary">Submit</button>
                     </div>
                 </div>
             </form>

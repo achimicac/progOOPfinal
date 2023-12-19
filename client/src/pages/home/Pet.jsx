@@ -37,6 +37,8 @@ const Pet = () => {
     }, []);
 
 
+
+
     return (
         <div className="home">
             <Helmet>
@@ -62,7 +64,7 @@ const Pet = () => {
                         <figure className='pet' key={pet.petID}>
                             <Link to={`/petprofile/${pet.petID}`} style={{ textDecoration: 'none' }}>
 
-                                {pet.id && <img src={`http://localhost:3009/${pet.petPfp}`} />}
+                                {pet.id && <img src={pet.petPfpUrl}/>}
                                 
                                 <figcaption>{pet.petName}</figcaption>
                             </Link>
@@ -81,7 +83,7 @@ const Pet = () => {
                             <figcaption>BBBB</figcaption>
                     </figure>
                     <div class="addpet">
-                        <a href="#"><Link to=""><i class="fa-solid fa-plus fa-4x"></i></Link></a>
+                        <a href="#"><Link to="/petregister"><i class="fa-solid fa-plus fa-4x"></i></Link></a>
                     </div>
                 </div>
             </main>

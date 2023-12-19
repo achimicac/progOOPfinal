@@ -22,13 +22,18 @@ app.use(cookieParser());
 app.use(express.urlencoded({extended: true}));
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(express.json()); //Can read the json file that get from user register.html
+/*
 app.use(cors(
       {
-            origin: ["http://localhost:3000"],
+            origin: "http://localhost:3000",
             methods: ["POST", "GET", "PUT", "DELETE"],
             credentials: true
       }
-));
+));*/
+app.use(cors({
+      origin: 'http://localhost:3000',
+      credentials: true,
+}));
 
 /*const storage = multer.diskStorage({
       destination: (req, res, cb) => {

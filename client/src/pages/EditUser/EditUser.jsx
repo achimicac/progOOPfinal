@@ -2,25 +2,22 @@ import React, { useState, useEffect } from 'react';
 import './EditUser.css';
 import { Helmet } from 'react-helmet';
 import axios from 'axios';
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const EditUser = () => {
     const { petid } = useParams();
 
     const navigate = useNavigate()
-    const location = useLocation()
     axios.defaults.withCredentials = true;
 
-    //const userId = location.pathname.split("/")[2]
-
-    const handleChange =  (e) => {
-         setUser({ ...user, [e.target.name]: e.target.value });
+    const handleChange = (e) => {
+        setUser({ ...user, [e.target.name]: e.target.value });
     };
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get(`http://localhost:3009/userprofile`); // Replace with your API endpoint
+                const response = await axios.get(`http://localhost:3009/userprofile`); 
                 setUser(response.data[0]);
             } catch (error) {
                 console.error('Error fetching user data:', error);
@@ -28,7 +25,7 @@ const EditUser = () => {
         };
 
         fetchUserData();
-    });
+    }, []);
 
 
     const handleUpdateProfile = async (e) => {
@@ -40,10 +37,10 @@ const EditUser = () => {
         }
 
         try {
-            const resEdit = await axios.put(`http://localhost:3009/userprofile/edit`, user); // Replace with your API endpoint
+            const resEdit = await axios.put(`http://localhost:3009/userprofile/edit`, user); 
             if (resEdit.data.status === "success") {
                 alert(resEdit.data.success);
-                navigate(`/petprofile/${petid}`)
+                navigate(`/userprofile`) //why
             } else {
                 alert(resEdit.data.error);
             }
@@ -71,13 +68,13 @@ const EditUser = () => {
     return (
         <div className="EditUser">
             <Helmet>
-                <meta charset="UTF-8"/>
-                <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+                <meta charset="UTF-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Edit User Profile</title>
-                <link rel="stylesheet" href="style.css"/>
-                <link rel="preconnect" href="https://fonts.googleapis.com"/>
-                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-                <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+                <link rel="stylesheet" href="style.css" />
+                <link rel="preconnect" href="https://fonts.googleapis.com" />
+                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+                <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
                 <script src="https://kit.fontawesome.com/957263c2c4.js" crossorigin="anonymous"></script>
             </Helmet>
             <body>
@@ -86,20 +83,20 @@ const EditUser = () => {
                 </div>
 
                 <main>
-                
+
                     <form action="" onSubmit={handleUpdateProfile}>
-                        
+
                         <div class="textinfo">
                             <label for="fname">First Name</label>
-                            <input id="fname" type="text" value={user.fname} onChange={handleChange} name="fname"/>
+                            <input id="fname" type="text" value={user.fname} onChange={handleChange} name="fname" />
                             <label for="lname">Last Name</label>
-                            <input id="lName" type="text" value={user.lname} onChange={handleChange} name="lname"/>
+                            <input id="lName" type="text" value={user.lname} onChange={handleChange} name="lname" />
                             <label for="email">Email</label>
                             <input id="email" type="text" value={user.email} onChange={handleChange} />
                             <label for="phone">Phone Number</label>
                             <input id="phone" type="tel" value={user.phone} onChange={handleChange} />
                             <label for="pw">Password</label>
-                            <input id="pw" type="text" value={user.pw} onInput={handleChange} />
+                            <input id="pw" type="text" value={user.pw} onInput={handleChange}/>
                             <label for="conf_pw">Confirm password</label>
                             <input id="conf_pw" type="text" value={user.conf_pw} onInput={handleChange} />
                         </div>
@@ -110,7 +107,7 @@ const EditUser = () => {
                         </div>
 
                     </form>
-            
+
                 </main>
                 <nav class="navigate">
                     <Link to="/articles"><a href="#"><i class="fa-solid fa-book-open fa-2x"></i></a></Link>
@@ -119,6 +116,7 @@ const EditUser = () => {
                 </nav>
             </body>
         </div>
-)}
+    )
+}
 
 export default EditUser;

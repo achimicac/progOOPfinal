@@ -55,11 +55,18 @@ const isImage = (req,file,cb)=>{
       }
       cb(null, false);
 };
-
+/*
 var upload = multer({
     storage:imgconfig,
     fileFilter:isImage
-})
+})*/
+const storage = multer.memoryStorage();
+const upload = multer({
+    storage: storage,
+    limits: {
+      fileSize: 10 * 1024 * 1024,
+    },
+  });
 
 router.get('/', loggedIn, (req, res) => {
     return res.json({status: "success"})
@@ -67,11 +74,7 @@ router.get('/', loggedIn, (req, res) => {
 
 router.post("/login", login);
 
-router.post("/petregister", upload.single("petPfp"), petregister, (req, res) => {
-    //console.log(`from page:  + ${req.body}`)
-    console.log("reqfile" + req.file)
-    console.log(req.body)
-});
+router.post("/petregister", upload.single("petPfp"), petregister);
 
 router.post('/userprofile/edit', userEdit);
 
@@ -92,7 +95,7 @@ router.get("/records", appoint, (req, res, next) => {
 } )
 
 router.get("/petprofile/:petid", petprofile, (req, res) => {
-    const data = res.petinfo;
+    let data = res.petinfo;
     return res.json(data);
 })
 
@@ -134,7 +137,7 @@ router.post("/register", register, (req, res) => {
     res.redirect('/login')
 })
 
-router.put("/petprofile/:petid/edit", petEdit)
+router.put("/petprofile/:petid/edit", upload.single("petPfp"), petEdit)
 
 router.get("/logout", logout);
 
