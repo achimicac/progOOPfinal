@@ -86,14 +86,14 @@ const Calendar = () => {
             <Helmet>
                 <meta charset="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <title>To Do List</title>
+                <title>Appointment List</title>
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
                 <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
                 <script src="https://kit.fontawesome.com/957263c2c4.js" crossorigin="anonymous"></script>
             </Helmet>
             <header>
-                <h1>Today Checklist</h1>
+                <h1>Appointment Checklist</h1>
             </header>
 
             <div class = "filter">
