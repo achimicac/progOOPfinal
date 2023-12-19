@@ -112,7 +112,7 @@ const PetInfo = () => {
                         <form action="">
                             <div class="select" >
                                 /////////////////////////////////
-                                <button href={`/petprofile/${pets.petID}/record`}><i class="fa-solid fa-book-medical fa-4x"></i></a>
+                                <button href={`/petprofile/${pets.petID}/record`}><i class="fa-solid fa-book-medical fa-4x"></i></button>
                                 /////////////////////////////
                             </div>
                         </form>
