@@ -133,6 +133,11 @@
     text-align: center;
 }
 
+.Articles .navigate .bookicon{
+    background-color: rgb(247, 247, 247);
+    padding: 7px;
+    border-radius: 20%;
+}
 
 @media screen and (min-width: 680px) { 
 

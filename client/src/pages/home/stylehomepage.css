@@ -99,6 +99,12 @@
     color: rgb(88, 75, 65);
 }
 
+.home .navigate .homeicon{
+    background-color: rgb(247, 247, 247);
+    padding: 7px;
+    border-radius: 20%;
+}
+
 .home .navigate i:hover{
     transform: scale(1.15); 
 }
@@ -113,6 +119,25 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr ;
     text-align: center;
+}
+
+.home .labeltext{
+    z-index: 1000;
+    position: absolute;
+    left: 50px;
+    top: 73px;
+}
+
+.home .labeltext p{
+    margin: 20px;
+    padding: 11px 20px;
+    border-radius: 20px;
+    background-color: white;
+    display: none;
+}
+
+.home .navigate i:hover .labeltext p {
+    display: block;
 }
 
 

@@ -63,7 +63,13 @@ const Records = () => {
                         <h2>Article</h2>
                         <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis aliquid nam ipsa fugit ab. Eos est reiciendis quae possimus velit ipsum unde! Alias praesentium magnam culpa adipisci reiciendis modi nisi!</p>
                     </div>
+
+                    <div class="addpet">
+                        <a href="#"><Link to="/petregister"><i class="fa-solid fa-plus fa-4x"></i></Link></a>
+                    </div>
                 </main>
+
+                
 
                 <nav class="navigate">
                     <Link to="/articles"><a href="#"><i class="fa-solid fa-book-open fa-2x"></i></a></Link>

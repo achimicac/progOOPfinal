@@ -145,7 +145,7 @@ const Calendar = () => {
             <nav class="navigate">
                 <Link to="/articles"><a href="#"><i class="fa-solid fa-book-open fa-2x"></i></a></Link>
                 <Link to="/home"><a href="#"><i class="fa-solid fa-house fa-2x"></i></a></Link>
-                <Link to="/calendar"><a href="#"><i class="fa-regular fa-calendar-days fa-2x"></i></a></Link>
+                <Link to="/calendar"><a href="#"><i class="fa-regular fa-calendar-days fa-2x calendaricon"></i></a></Link>
             </nav>
         </div>
     )
