@@ -10,7 +10,6 @@
 	justify-content: center;
 	align-items: center;
 	min-height: 90vh;
-    background-color: rgb(247, 247, 247);
     font-family: 'Catamaran';
 }
 
@@ -32,12 +31,12 @@
     border-radius: 30px;
     padding: 20px;
 	position: relative;
+	margin: 40px;
 }
 
 .addpet .container {
 	width: 100%;
 	padding: 20px;
-
 }
 
 .addpet .img-area {
@@ -209,6 +208,10 @@
 
 @media screen and (min-width: 680px) {
 
+	.addpet main {
+		margin-left: 100px;
+	}
+
 	.addpet form {
 		margin-left: 50px
 	}
@@ -240,13 +243,28 @@
 	}
 }
 
-@media screen and (min-width: 1170px){
+@media screen and (min-width: 1160px){
+
+	.addpet .container {
+		width: 50%;
+		padding: 20px;
+	}
+	
+
+	.addpet body {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-height: 90vh;
+		font-family: 'Catamaran';
+	}
 
 	.addpet form {
-		margin-left: 200px;
+		margin-left: 0px;
 		right: auto;
 		display: flex;
 		flex-direction: row;
+		justify-content: space-evenly;
 	}
 	
 	.addpet .img-area {
@@ -255,9 +273,7 @@
 	}
 
 	.addpet .textinfo {
-		margin-left: 200px;
-		margin-top: 50px;
-		justify-content: end;
+		margin-right: 50px;
 	}
 
 	.addpet select {
