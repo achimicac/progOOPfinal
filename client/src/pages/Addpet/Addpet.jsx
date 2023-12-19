@@ -99,7 +99,7 @@ const Addpet = () => {
         <Helmet>
             <meta charset="UTF-8"/>
             <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-            <title>Add ,</title>
+            <title>Pet Register</title>
             <link rel="preconnect" href="https://fonts.googleapis.com"/>
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
             <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
@@ -108,6 +108,7 @@ const Addpet = () => {
         <div class="back">
                 <a href="/home"><Link to='/home'><i class="fa-solid fa-chevron-left fa-3x"></i></Link></a>
         </div>
+        
         <main>
             <form onSubmit={handleSubmit} encType="multipart/form-data">
             <div className="container">
