@@ -22,7 +22,7 @@ const Calendar = () => {
     useEffect(() => {
         const fetchAppointments = async () => {
             try {
-                const response = await axios.get(`http://localhost:3009/calendar`); // Replace with your API endpoint
+                const response = await axios.get(`http://localhost:3009/calendar`); 
                 setShowapp(response.data);
             } catch (error) {
                 console.error('Error fetching to do list:', error);
@@ -40,7 +40,7 @@ const Calendar = () => {
 
         try {
             const updatedAppointment = { ...appointment, status: !appointment.status ? '' : 'completed' };
-            await axios.put(`http://localhost:3009/appointment `, appointment); // Replace with your API endpoint
+            await axios.put(`http://localhost:3009/appointment `, appointment); 
             navigate("/calendar")
         } catch (error) {
             console.error(error);
@@ -51,7 +51,7 @@ const Calendar = () => {
         e.preventDefault();
 
         try {
-            await axios.put(`http://localhost:3009/appointment`, appointment); // Replace with your API endpoint
+            await axios.put(`http://localhost:3009/appointment`, appointment); 
             navigate("/calendar")
         } catch (error) {
             console.error(error);
@@ -61,6 +61,26 @@ const Calendar = () => {
     const handleClick = async (e) => {
         navigate("/calendar")
     }
+
+    const filterMonth = event => {
+        const selectedMonth = event.target.value;
+        const requestData = {
+            selectedMonth: selectedMonth
+        };
+        axios.post('http://localhost:3009/upload', requestData)
+            .then(res => {
+                if (res.data.Status === "success") {
+                    console.log("Select Month Success");
+                } else {
+                    console.log("Select Month Failed");
+                }
+            })
+            .catch(error => {
+                console.error("Select Month error:", error);
+            });
+    };
+    
+
     return (
         <div className="Today">
             <Helmet>
@@ -78,10 +98,15 @@ const Calendar = () => {
 
             <div class = "filter">
                 <p>Choose month</p>
-                <input type = 'month'></input>
+                <input 
+                    type = 'month'
+                    onChange={filterMonth}
+                />
             </div>
 
             <main>
+
+
                 {showapp.map(app => (
                     <div className='container'>
                         <div className="appointment" key={app.appID}>
@@ -99,7 +124,9 @@ const Calendar = () => {
                         </div>
                     </div>
                 ))}
-                {/* อาจเอา map ครอบ container */}
+
+
+
                 <div className='container'>
                     <div className="appointment">
                         <h2>Procedure</h2>
