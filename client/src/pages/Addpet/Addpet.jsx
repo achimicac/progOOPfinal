@@ -6,6 +6,9 @@ import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 
 const Addpet = () => {
+    const [showText, setShowText] = useState(true);
+    const [imageUrl, setImageUrl] = useState('');
+    const [imageName, setImageName] = useState('');
     const navigate = useNavigate()
     const [pet, setPet] = useState({
         petPfp: "",
@@ -17,57 +20,25 @@ const Addpet = () => {
 
     const [file, setFile] = useState(null)
     axios.defaults.withCredentials = true;
+
+    const handleImgChange = (e) => {
+        const image = e.target.files[0];
+        if (image.size < 2000000) {
+          const reader = new FileReader();
     
+          reader.onload = () => {
+            setImageUrl(reader.result);
+            setImageName(image.name);
+          };
+          setShowText(false);
+          reader.readAsDataURL(image);
+          
+          
+        } else {
+          alert("Image size more than 2MB");
+        }
+      };
 
-    window.onload = function () {
-        const inputFile = document.getElementById('file');
-        const imgArea = document.querySelector('.img-area');
-
-        inputFile.addEventListener('change', function (e) {
-            const image = this.files[0]
-            if (image.size < 2000000) {
-                const reader = new FileReader();
-                reader.onload = () => {
-                    const allImg = imgArea.querySelectorAll('img');
-                    allImg.forEach(item => item.remove());
-                    const imgUrl = reader.result;
-                    const img = document.createElement('img');
-                    img.src = imgUrl;
-                    imgArea.appendChild(img);
-                    imgArea.classList.add('active');
-                    imgArea.dataset.img = image.name;
-                }
-                reader.readAsDataURL(image);
-            } else {
-                alert("Image size more than 2MB");
-            }
-        })
-        
-    }
-
-    /*const [file, setFile] = useState();
-    const handleFile = (e) => {
-        setFile(e.target.file[0])
-    }
-    const handleUPload = () => {
-        const formdata = new FormData();
-        formdata.append('image', file)
-        axios.post('httpd://localhost:3009/upload')
-        .then(res => {
-            if(res.data.Status === "success"){
-                console.log("Add image Success")
-            } else {
-                console.log("Add image Failed")
-            }
-        })
-        .catch(err => {console.log(err)})
-    }*/
-
-    const setimgfile = (e) => {
-        console.log(e.target.files[0])
-        setFile(e.target.files[0])
-    }
-    console.log(file)
 
     const handleChange = (e) => {
         setPet((prev) => ({ ...prev, [e.target.name]: e.target.value}))
@@ -90,7 +61,7 @@ const Addpet = () => {
         }
         try{
             console.log("formdata" + URL.createObjectURL([...formData][0]))
-            const respet = await axios.post("http://localhost:3009/petregister", formData, config) //ใส่หน้าในนี้ด้วยเด้อ
+            const respet = await axios.post("http://localhost:3009/petregister", formData, config) 
             if(respet.data.status === "error"){
                 alert(respet.data.error)
             }
@@ -118,14 +89,24 @@ const Addpet = () => {
         </div>
         <main>
             <form onSubmit={handleSubmit} encType="multipart/form-data">
-                <div class="container">
-                    <div class="img-area" data-img="">
-                        <i class='bx bxs-cloud-upload icon'></i>
-                        <h3>Upload Image</h3>
-                        <p>Image size must be less than <span>2MB</span></p>
-                    </div>
-                    <input type="file" id="file" name="petPfp" onChange={setimgfile} multiple={false}/>
-                </div>
+            <div className="container">
+  <div className="img-area" data-img="">
+    {imageUrl && (
+      <div className="img-area active" data-img={imageName}>
+        <img src={imageUrl} alt="Uploaded" />
+      </div>
+    )}
+
+    {imageUrl ? null : (
+      <div className="text">
+        <i className="bx bxs-cloud-upload icon"></i>
+        <h3>Upload Image</h3>
+        <p>Image size must be less than <span>2MB</span></p>
+      </div>
+    )}
+  </div>
+  <input type="file" id="file" name="petPfp" onChange={handleImgChange} multiple={false} />
+</div>
 
                 <div class="textinfo">
                     <label for="name">Name</label>
